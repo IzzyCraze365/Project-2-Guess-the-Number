@@ -24,47 +24,56 @@ let max = 100;
 let min = 1;
 let guess = 0;
 let i =0;
-let userInput = "A";
+let userInput = "Start";
 
 // TODO here is where the most of the code should go
 
-whatIsYourRange()
-startPhrase(); // Prints Statement
+while(userInput === "Start"){
+  whatIsYourRange();
+  whatIsYourMin(); //returns min
+  whatIsYourMax(); //returns max
+  console.log('Our range has been set from', min,"to",max +".");
+  startPhrase(); // Prints Statement
+  userInput = "A";
+  console.log("userInput =",userInput,"Min =",min,"Max =",max);
+  }
+ 
+  //console.log("Function whatIsYourRange test",whatIsYourRange()); //! TEST
 
-while(userInput !== "Y"){
-cpuGuess(min,max); //return guess
-questionGuess(guess); //returns "guess"
-userInput = ;//the user gives input Y or N
 
-allCaps(userInput); // Y or N
-if(guess === "Y"){
-  endPhrase(guess);
-}else if (guess ==="N"){
-  questionHighLow()
-  userInput = ;//the user gives input L or H
-  allCaps(userInput); // L or H
-  if(userInput === "L"){
-    numberIsLower(guess); // returns new max
-  }else if(userInput === "H"){
-    numberIsHigher(guess); // returns new min
- }else{notValid();
+
+while(userInput !== "START"){
+while(userInput !== ("Y"||"YES")){
+  cpuGuess(min,max); //return guess as a number
+  questionGuess(guess); //returns "userInput" Y or N
+  if(userInput === ("Y"||"YES")){
+    endPhrase(guess); // returns Yes of No
+      if(userInput ===("Y"||"YES")){
+      min = 1;
+      max = 100;
+      guess = 0
+      i = 0;
+      userInput = "START";
+     }else{
+      console.log("Have a Nice Day!");
+      userInput = "EXIT";node 
+      break}
+  }else if (userInput ===("N"||"NO")){
+    questionHighLow()
+    if(userInput === "L"){
+      numberIsLower(guess); // returns new max
+    }else if(userInput === "H"){
+      numberIsHigher(guess); // returns new min
+    }else{notValid();
+    }
+  }else{notValid();
 }
-}else{notValid();
 }
-
+  }
 
 
 
 //! Function List (Alphabetical Order)
-/* 
-// Function to Generate a Random Number
-function randomNum(min, max) {
-  let range = max - min + 1;
-  return Math.floor(Math.random() * range) + min;
-}
-console.log("Function randomNum test",randomNum(1,100)); //! TEST
- */
-
 
 // Function to fix userInput
 function allCaps(userInput){
@@ -93,8 +102,11 @@ console.log("Function cpuGuess test",cpuGuess(99,100)); //! TEST
 
 
 // Function to say a Phrase at the when you guess the correct Number
-function endPhrase(guess){
-  console.log(`Your number is ${guess}! \n Would you like to play again? \n Yes (Y) or No (N)?`);
+async function endPhrase(guess){
+  console.log(`Your number is ${guess}!`);
+  let userInput = await ask(`Would you like to play again? \n Yes (Y) or No (N)?`);
+  userInput = allCaps(userInput);
+  return userInput;
 }
 //endPhrase(66); //! Test Print of Phrase
 
@@ -138,10 +150,11 @@ console.log("Function numberIsLower test",numberIsLower(5)); //! TEST
 
 
 // Function to say a Phrase Each Round
-function questionGuess(guess){
-  console.log(`Is it... ${guess}, Yes (Y) or No (N)?`)
+async function questionGuess(guess){
+  let userInput = await ask(`Is it... ${guess}, \n Yes (Y) or No (N)?`);
+  userInput = allCaps(userInput);
+  return userInput;
 }
-//questionGuess(12); //! Test of Function
 
 
 // Function to say a Phrase Each Round
@@ -159,50 +172,19 @@ function startPhrase(){
 
 
 // Function for Player to tell the Range
+async function whatIsYourMax(){
+  max = await ask("What would you like the largest number in our game to be?\n If your not sure I recommend using the number 100\n");
+  return max;
+}
+
+async function whatIsYourMin(){
+  let min = await ask("What would you like the smallest number in our game to be?\n If your not sure I recommend using the number 1\n");
+  return min;
+}
+whatIsYourMin();
+
+
 function whatIsYourRange(){
-  //TODO Add Code
+    console.log("First we need to set the Range of Numbers for our game.")
 }
-console.log("Function whatIsYourRange test",whatIsYourRange()); //! TEST
-
-
-
-/*
-
-// TODO START OF Guess my color parts
-let userInput = "TIME TO START THE GAME"; //This doens't matter will be redefiend in the while loop immediately
-let i = 0; //counter
-//debugger
-// WHILE LOOP
-while (userInput !== "exit") {
-  userInput = prompt("Pick a Number!").toLowerCase().trim(); // TODO daisy chain bother trim and lowercase PROMPT
-    //console.log("The userInput is", userInput); //! TEST
-  
-    if (guessMyColor.includes(userInput) === true) {
-      if (userInput === "exit") {
-        alert("Have a Nice Day!"); // pop up
-      } else if (userInput === color) {
-        alert(
-          `CONGRATULATIONS ${userInput} is the mystery color! Number of Guesses: ${i}. Type EXIT to end the game.`
-        ); //  pop up
-        //console.log("CONGRATULATIONS", userInput,"is the mystery color! \n Type EXIT to end the game.""); //! TEST in Console
-        //break; //! TEST
-      } else {
-        i++;
-        alert(`${userInput} is not the correct color. Number of Guesses: ${i}, Try Again.`); // pop up
-        //console.log("SORRY \n ",userInput,"is not the correct color.\n Try Again") //! TEST in Console
-        //break; //! TEST
-      }
-    } else {
-      i++;
-      alert(`SORRY! ${userInput} not on the list of colors. Number of Guesses: ${i} Try Again.`); // ALERT
-      //console.log("TRY AGAIN, Your selectionis not on the list of colors!"); //! TEST in Console
-      //break; //! TEST
-    }
-  }
-// TODO END OF Guess my color parts
-
-
-  process.exit();
-}
-
-*/
+//console.log("Function whatIsYourRange test",whatIsYourRange()); //! TEST
