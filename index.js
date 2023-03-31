@@ -28,48 +28,45 @@ async function start() {
   let min = 1;
   let guess = 0;
   let i = 0;
-  let userInput = "Start";
+  let userInput = "START-GAME"; // Cannot get this variable in normal ways
 
   // TODO here is where the most of the code should go
 
-while (userInput === "Start") {
+while (userInput === "START-GAME") {
     whatIsYourRange();
-    min = whatIsYourMin(); //returns min
-    max = whatIsYourMax(); //returns max
+    min = await whatIsYourMin(); //returns min waits for a user response
+    max = await whatIsYourMax(); //returns max waits for a user response
     console.log(`Our range has been set from ${min} to ${max}.`);
     startPhrase(min,max); // Prints Statement
     userInput = "A";
     console.log("userInput =", userInput, "Min =", min, "Max =", max);
   }
 
-  //console.log("Function whatIsYourRange test",whatIsYourRange()); //! TEST
-
-  while (userInput !== "START") {
-    while (userInput !== ("Y" || "YES")) {
-      cpuGuess(min, max); //return guess as a number
-      questionGuess(guess); //returns "userInput" Y or N
-      if (userInput === ("Y" || "YES")) {
-        endPhrase(guess); // returns Yes of No
-        if (userInput === ("Y" || "YES")) {
+  while (userInput !== "EXIT") {
+    while (userInput !== ("Y" || "Yes")) {
+      guess = cpuGuess(min, max); //return "guess" = number
+      userInput = await questionGuess(guess); //returns "userInput" = Y or N
+      if (userInput === ("Y" || "Yes")) {
+       userInput = endPhrase(guess); // returns Yes of No
+        if (userInput === ("Y" || "Yes")) {
           min = 1;
           max = 100;
           guess = 0;
           i = 0;
-          userInput = "START";
+          userInput = "START-GAME";
         } else {
           console.log("Have a Nice Day!");
           userInput = "EXIT";
-          node;
           break;
         }
-      } else if (userInput === ("N" || "NO")) {
-        questionHighLow();
-        if (userInput === "L") {
-          numberIsLower(guess); // returns new max
-        } else if (userInput === "H") {
-          numberIsHigher(guess); // returns new min
+      } else if (userInput === ("N" || "No")) {
+        userInput = await questionHighLow();
+        if (userInput === ("L" || "Low"|| "Lower")) {
+          max = guess; // returns new max
+        } else if (userInput === ("H" || "High" || "Higher")) {
+          min = guess; // returns new min
         } else {
-          notValid();
+          cheating(guess, min, max);
         }
       } else {
         notValid();
@@ -82,8 +79,7 @@ while (userInput === "Start") {
 
 // Function to fix userInput
 function allCaps(userInput) {
-  userInput = userInput.toUpperCase().trim();
-  return userInput;
+  return userInput.toUpperCase().trim();
 }
 /* 
 let letter= "      x";
@@ -94,19 +90,29 @@ console.log("Function allCaps test",allCaps(letter)); //! TEST
 function firstLetterCaps(name) {
   let firstLetter1 = name.charAt(0).toUpperCase();
   let restOfWord1 = name.slice(1).toLowerCase();
-  playerName = firstLetter1 + restOfWord1;
-  return playerName;
+  return firstLetter1 + restOfWord1;
 }
 //console.log(firstLetterCaps("yes")); // TEST
+
+// Function to figure out
+function cheating(guess,min,max) {
+  if(guess === (min||max)){
+    console.log(`Your  "${guess}" is correct but I broke on the inside.`);  
+  }else if(guess <= min){
+  console.log(`Your guess of ${guess} is not a valid choice. \n Because ${guess} is less than ${min} \nPlease choose again, you cheater.`);
+  }else if( guess > max){
+    console.log(`Your guess of ${guess} is not a valid choice. \n Because ${guess} is greater than ${min} \nPlease choose again, you cheater.`);
+  }else{
+      console.log("ERROR CODE BROKEN");
+    }
+  }
 
 // Function for the CPU to provide a Guess
 function cpuGuess(min, max) {
   if (min === max - 1) {
-    guess = max; //otherwise you can never guess the Max number
-    return guess;
+    return max; //otherwise you can never guess the Max number
   } else {
-    guess = Math.floor((max + min) / 2);
-    return guess;
+    return Math.floor((max + min) / 2);
   }
 }
 /* 
@@ -120,73 +126,24 @@ async function endPhrase(guess) {
   let userInput = await ask(
     `Would you like to play again? \n Yes (Y) or No (N)?`
   );
-  userInput = allCaps(userInput);
-  return userInput;
+  return firstLetterCaps(userInput);
 }
 //endPhrase(66); //! Test Print of Phrase
 
-// Function to say a Phrase at the when you guess the correct Number
-function notValid() {
-  console.log(
-    `Your input "${guess}" is not a valid choice. \n Please choose again.`
-  );
+fucntion notValid(){
+  //TODO add code
 }
-/* 
-let guess = "J"
-notValid(); //! Test Print of Phrase
-*/
-
-// Function for when the Player says their number is Higher
-function numberIsHigher(guess) {
-  console.log(
-    "Before numberIsHigher function Guess=",
-    guess,
-    "& New Min =",
-    min
-  ); //! TEST
-  min = guess;
-  console.log(
-    "After numberIsHigher function Guess=",
-    guess,
-    "& New Min =",
-    min
-  ); //! TEST
-  return min;
-}
-/* 
-let max = 100; //! TEST Variable
-let min = 1; //! TEST Variable
-console.log("Function numberIsLower test",numberIsHigher(45)); //! TEST
- */
-
-// Function for when the Player says their number is Lower
-function numberIsLower(guess) {
-  console.log(
-    "Before numberIsLower function Guess=",
-    guess,
-    "& New Max =",
-    max
-  ); //! TEST
-  max = guess;
-  console.log("After numberIsLower function Guess=", guess, "& New Max =", max); //! TEST
-  return max;
-}
-/*
-let max = 100; //! TEST Variable
-let min = 1; //! TEST Variable
-console.log("Function numberIsLower test",numberIsLower(5)); //! TEST
- */
 
 // Function to say a Phrase Each Round
 async function questionGuess(guess) {
   let userInput = await ask(`Is it... ${guess}, \n Yes (Y) or No (N)?`);
-  userInput = allCaps(userInput);
-  return userInput;
+  return firstLetterCaps(userInput);
 }
 
 // Function to say a Phrase Each Round
-function questionHighLow() {
-  console.log("Is it higher (H), or lower (L)?");
+async function questionHighLow() {
+  let userInput = await ask("Is it higher (H), or lower (L)? \n");
+  return userInput
 }
 //questionHighLow(); //! Test Print of Phrase
 
@@ -200,15 +157,12 @@ function startPhrase(min,max) {
 
 // Function for Player to tell the Range
 async function whatIsYourMax() {
-console.log("\n What would you like the largest number in our game to be?");
-let rangeMax = await ask("If your not sure I recommend using the number 100 \n");
+let rangeMax = await ask(" What would you like the largest number in our game to be? \n If your not sure I recommend using the number 100 \n");
   return rangeMax;
 }
 
 async function whatIsYourMin() {
-  console.log("\n What would you like the smallest number in our game to be?");
-  let rangeMin = await ask("If your not sure I recommend using the number 1 \n"
-  );
+  let rangeMin = await ask("What would you like the smallest number in our game to be? \n If your not sure I recommend using the number 1 \n");
   return rangeMin;
 }
 whatIsYourMin();
