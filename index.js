@@ -20,7 +20,7 @@ async function start() {
   let secretNumber = await ask(
     "What is your secret number?\nI won't peek, I promised...\n"
   );
-  console.log(`You entered: ${secretNumber} \n`);
+  console.log(`You entered: ${secretNumber}\n`);
   // Now try and complete the program.
 
   //! Global Variable List (before change)
@@ -31,17 +31,17 @@ async function start() {
   let userInput = "START-GAME"; // Cannot get this variable in normal ways
   let highLow = "A";
   let playAgain = "START"
-
+  console.log(secretNumber);
   // TODO here is where the most of the code should go
 
   while (userInput === "START-GAME") {
     //phraseSetRange();
-    min = await setRangeMin(); //returns min waits for a user response
-    max = await setRangeMax(min); //returns max waits for a user response
-    console.log(`Our range has been set from ${min} to ${max}.`);
+    min = await setRangeMin(secretNumber); //returns min waits for a user response
+    max = await setRangeMax(secretNumber, min); //returns max waits for a user response
+    console.log(`Our range has been set from ${min} to ${max}.\n`);
     phraseStart(min, max); // Prints Statement
     userInput = "A";
-    console.log(   "TEST 1 userInput =", userInput,"Guess=",guess,"Min =",min,"Max =", max); //!TEST
+    console.log(secretNumber);
   }
 
   while (userInput !== "Exit") {
@@ -57,7 +57,7 @@ async function start() {
           i = 0;
           userInput = "START-GAME";
         } else if (round2 === ("E" || "Exit")) {
-          console.log("Have a Nice Day!");
+          console.log("\nHave a Nice Day!\n\n");
           userInput = "Exit";
           process.exit(); // This should end the game
         } else {
@@ -70,12 +70,15 @@ async function start() {
         } else if (highLow === ("H" || "High" || "Higher")) {
           min = guess; // returns new min
         } else if (highLow === "Exit") {
-          console.log("Have a Bad Day!");
+          console.log("\nHave a Bad Day!");
           userInput = "Exit";
           process.exit(); // This should end the game
         } else {
           cheating(guess, min, max);
         }
+      } else if (correctNumber === ("E" || "Exit")) {
+        console.log("Have a numberless Day!");
+        process.exit();// This should end the game
       } else {
         notValid(highLow);
       }
@@ -92,21 +95,22 @@ function capitalizeFirstLetter(name) {
   let restOfWord1 = name.slice(1).toLowerCase();
   return firstLetter1 + restOfWord1;
 }
-//console.log(capitalizeFirstLetter("   yes")); //! TEST
+
 
 // Function to figure out
 function cheating(guess, min, max) {
   if (guess == "Exit") {
-    console.log("Have a Nice Day");
+    console.log("\nHave a Cheap Day\n\n");
+    process.exit();
   } else if (guess === (min || max)) {
-    console.log(`Your "${guess}" is correct but I broke on the inside.`);
+    console.log(`Your "${guess}" is correct but I broke on the inside.\n`);
   } else if (guess <= min) {
     console.log(
-      `Your guess of ${guess} is not a valid choice. \n Because ${guess} is less than ${min} \nPlease choose again, you cheater.`
+      `Your guess of ${guess} is not a valid choice.\nBecause ${guess} is less than ${min}\nPlease choose again, you cheater.\n`
     );
   } else if (guess > max) {
     console.log(
-      `Your guess of ${guess} is not a valid choice. \n Because ${guess} is greater than ${min} \nPlease choose again, you cheater.`
+      `Your guess of ${guess} is not a valid choice.\nBecause ${guess} is greater than ${min}\nPlease choose again, you cheater.\n`
     );
   } else {
     console.log("ERROR CODE BROKEN");
@@ -116,10 +120,8 @@ function cheating(guess, min, max) {
 // Function for the CPU to provide a Guess
 function cpuGuess(min, max) {
   if (min === max - 1) {
-    console.log("Test zone 3.5");
     return max; //otherwise you can never guess the Max number
   } else {
-    console.log("Test zone 3.9");
     console.log("Initial Guess", Math.floor((max + min) / 2));
     return Math.floor((max + min) / 2);
   }
@@ -128,20 +130,20 @@ function cpuGuess(min, max) {
 // Function to say a Phrase Each Round
 async function cpuGuessQuestion(guess) {
   let correctlyGuessedNumber = await ask(
-    `Is it... ${guess}, \n Yes (Y) or No (N)?\n`
+    `Is it... ${guess},\nYes (Y) or No (N)?\n`
   );
   return capitalizeFirstLetter(correctlyGuessedNumber);
 }
 
 function notValid(stoopidAnswer) {
-  console.log(`${stoopidAnswer} is NOT a valid response. \n Try Again\n`);
+  console.log(`${stoopidAnswer} is NOT a valid response.\nTry Again\n`);
 }
 
 // Function to say a Phrase at the when you guess the correct Number
 async function phraseEndOfGame(guess) {
-  console.log(`Your number is ${guess}!`);
+  console.log(`\nYour number is ${guess}!`);
   let playAgain = await ask(
-    `Would you like to play again? \n Play (P) or Exit (E)?\n`
+    `\nWould you like to play again?\nPlay (P) or Exit (E)?\n`
   );
   return capitalizeFirstLetter(playAgain);
 }
@@ -149,7 +151,7 @@ async function phraseEndOfGame(guess) {
 // Function to say a Phrase Each Round
 async function phraseHighLowQuestion(guess) {
   let userInput = await ask(
-    `Is your number higher (H) or lower (L) than ${guess}? \n`
+    `\nIs your number higher (H) or lower (L) than ${guess}?\n`
   );
   return capitalizeFirstLetter(userInput);
 }
@@ -157,38 +159,50 @@ async function phraseHighLowQuestion(guess) {
 // Function to say a Phrase at the start of the Game
 function phraseStart(min, max) {
   console.log(
-    `Please think of a number between ${min} and ${max} (inclusive). \n I will try to guess it.\n`
+    `Please think of a number between ${min} and ${max} (inclusive).\nI will try to guess it.\n`
   );
 }
 
+
 // Function for Player to tell the Range
-async function setRangeMax(min) {
+async function setRangeMax(secretNumber, min) {
   let rangeMax = await ask(
-    " What would you like the largest number in our game to be? \n (If your not sure I recommend using the number 100) \n"
-  );
-  if (rangeMax > min) {
-    rangeMax = parseInt(rangeMax); // This turns the string, into a number
-    rangeMax= setRangeNumberCheck(rangeMax);
-    return rangeMax;
+    " What would you like the largest number in our game to be?\n(If your not sure I recommend using the number 100)\n");
+  rangeMax = parseInt(rangeMax); // This turns the string, into a number
+  if (rangeMax >= secretNumber) {
+    if (rangeMax > min) {
+      rangeMax = setRangeNumberCheck(rangeMax);
+      return rangeMax;
+    } else {
+      rangeMax = setRangeNumberCheck(rangeMax);
+      console.log(`Sorry, but you need to choose a number that is greater than ${min}\nPlease start the game again.\n\n`);
+      process.exit();
+    }
   } else {
-    rangeMax= setRangeNumberCheck(rangeMax);
-    console.log(`Sorry, but you need to choose a number that is greater than ${min} \n Please start the game again.`);
+    console.log(`Wow, your cheating already...\nYour secret number (${secretNumber}) cannot be more than the top of your range (${rangeMax})\nRestart the Game... you CHEATER!!!\n\n`);
+    process.exit();
   }
 }
 
-async function setRangeMin() {
+
+async function setRangeMin(secretNumber) {
   let rangeMin = await ask(
-    "First we need to set the Range of Numbers for our game.\n What would you like the smallest number in our game to be? \n (If your not sure I recommend using the number 1) \n"
+    `First we need to set the Range of Numbers for our game.\nWhat would you like the smallest number in our game to be?\n(If your not sure I recommend using the number 1)\n`
   );
   rangeMin = parseInt(rangeMin); // This turns the string, into a number
-  rangeMin= setRangeNumberCheck(rangeMin);
-  return rangeMin;
+  if (rangeMin <= secretNumber) {
+    rangeMin = setRangeNumberCheck(rangeMin);
+    return rangeMin;
+  } else {
+    console.log(`Wow, your cheating already...\nYour secret number (${secretNumber}) cannot be less than the bottom of your range (${rangeMin})\nRestart the Game... you CHEATER!!!\n\n`);
+    process.exit();
+  }
 }
 
-function setRangeNumberCheck(notANumber){
-  if((isNaN(notANumber)) === false){
+function setRangeNumberCheck(notANumber) {
+  if ((isNaN(notANumber)) === false) {
     return notANumber;
-  }else{
-    console.log(`Nice try \n ${notANumber} is NOT a number...`);
+  } else {
+    console.log(`Nice try\n${notANumber} is NOT a number...\n`);
   }
 }
