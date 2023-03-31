@@ -49,7 +49,7 @@ async function start() {
       guess = cpuGuess(min, max); //return "guess" = number
       let correctNumber = await cpuGuessQuestion(guess); //returns "correctNumber" = Y or N
       if (correctNumber === ("Y" || "Yes")) {
-        round2 = phraseEndOfGame(guess); // returns Yes of No
+        round2 = await phraseEndOfGame(guess); // returns Play or Exit
         if (round2 === ("P" || "Play")) {
           min = 1;
           max = 100;
@@ -59,6 +59,7 @@ async function start() {
         } else if (round2 === ("E" || "Exit")) {
           console.log("Have a Nice Day!");
           userInput = "Exit";
+          process.exit(); // This should end the game
         } else {
           notValid(round2);
         }
@@ -71,6 +72,7 @@ async function start() {
         } else if (highLow === "Exit") {
           console.log("Have a Bad Day!");
           userInput = "Exit";
+          process.exit(); // This should end the game
         } else {
           cheating(guess, min, max);
         }
@@ -132,7 +134,7 @@ async function cpuGuessQuestion(guess) {
 }
 
 function notValid(stoopidAnswer) {
-  console.log(`"${stoopidAnswer}" is NOT a valid response. \n Try Again\n`);
+  console.log(`${stoopidAnswer} is NOT a valid response. \n Try Again\n`);
 }
 
 // Function to say a Phrase at the when you guess the correct Number
@@ -166,11 +168,11 @@ async function setRangeMax(min) {
   );
   if (rangeMax > min) {
     rangeMax = parseInt(rangeMax); // This turns the string, into a number
+    rangeMax= setRangeNumberCheck(rangeMax);
     return rangeMax;
   } else {
-    console.log(
-      `Sorry, but you need to choose a number that is greater than ${min} \n Please start the game again.`
-    );
+    rangeMax= setRangeNumberCheck(rangeMax);
+    console.log(`Sorry, but you need to choose a number that is greater than ${min} \n Please start the game again.`);
   }
 }
 
@@ -179,18 +181,14 @@ async function setRangeMin() {
     "First we need to set the Range of Numbers for our game.\n What would you like the smallest number in our game to be? \n (If your not sure I recommend using the number 1) \n"
   );
   rangeMin = parseInt(rangeMin); // This turns the string, into a number
+  rangeMin= setRangeNumberCheck(rangeMin);
   return rangeMin;
 }
 
 function setRangeNumberCheck(notANumber){
-  if((typeof(notANumber)) == Number){
+  if((isNaN(notANumber)) === false){
     return notANumber;
   }else{
     console.log(`Nice try \n ${notANumber} is NOT a number...`);
   }
 }
-setRangeNumberCheck(55);
-
-notANumber = 55;
-console.log( typeof(notANumber));
-console.log( typeof(notANumber) == Number);
