@@ -25,7 +25,7 @@ async function start() {
     `\nRemember this number, its your Super-Special-Awesome "Secret Number"\nYou entered: ${secretNumber}\n`
   );
 
-  // Global Variable List
+  // Global Variable List (default)
   let max = 100;
   let min = 1;
   let guess = 0;
