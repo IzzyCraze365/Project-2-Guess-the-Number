@@ -26,7 +26,7 @@ start(); // Start of the game
 
 async function start(){
   let standardOrReverse = await ask(
-    `What kind of a game would you like to play???\nThe Standard Game, where you (human) make up a number and I (computer) try to guess it.\nOr the Reverse Gamewhere I (computer) make up a number and you (human) try to guess it.\n\n If you want to play the Standard Game type in "STANDARD" or "S"\nIf you want to play the Reverse Game type in "REVERSE" or "R"\n`);
+    `What kind of a game would you like to play???\nThe Standard Game, where you (human) make up a number and I (computer) try to guess it.\nOr the Reverse Gamewhere I (computer) make up a number and you (human) try to guess it.\n \nIf you want to play the Standard Game type in "STANDARD" or "S"\nIf you want to play the Reverse Game type in "REVERSE" or "R"\n`);
     standardOrReverse =  capitalizeFirstLetter(standardOrReverse);
 if(standardOrReverse==="Standard" || standardOrReverse==="S"){
   startStandardGame(); // This is where all the code is for the Standard Game
@@ -42,11 +42,11 @@ if(standardOrReverse==="Standard" || standardOrReverse==="S"){
 // This is the code for the //! Standard Game
 async function startStandardGame() {
   let secretNumber = await ask(
-    `What is your "Secret Number"?\n\nI won't peek, I promise...\n(Cross my Harddrive & Hope to Crash...)\n`
+    `\nWhat is your "Secret Number"?\nI won't peek, I promise...\n(Cross my Harddrive & Hope to Crash...)\n`
   );
   setRangeNumberCheck(secretNumber);
   console.log(
-    `\nRemember this number, its your Super-Special-Awesome "Secret Number"\nYou entered: ${secretNumber}\n`
+    `\nRemember this number.\nIts your Super-Special-Awesome "Secret Number"!\nYou entered: ${secretNumber}\n`
   );
 
   min = await setRangeMin(secretNumber); //returns min waits for a user response
