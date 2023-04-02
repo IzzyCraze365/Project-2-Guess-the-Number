@@ -11,7 +11,7 @@ function ask(questionText) {
   });
 }
 
-startReverseGame();
+startReverseGame(); // This is where all the code is for the Reverse Game
 
 async function startReverseGame() {
   console.log(`Let's play a game where I (computer) make up a number and you (human) try to guess it.\n\n`)
@@ -28,8 +28,8 @@ async function startReverseGame() {
  let highLow = "A";
  let toInfinityAnd = "START"; // These keeps the While loop running
 
- min = await setRangeMin(); //returns min waits for a user response
- max = await setRangeMax(min); //returns max waits for a user response
+ min = await setRangeMinReverse(); //returns min waits for a user response
+ max = await setRangeMaxReverse(min); //returns max waits for a user response
  secretNumber = randomNum(min,max); //picks the Secret Number
  maxDummy = max; //This will tell the player if they make a stupid guess
  minDummy = min; // This will tell the player if they made a stupid guess
@@ -180,7 +180,7 @@ function quitGame(quit) {
 
 
 // Function for Player to set the top of the Range
-async function setRangeMax(min) {
+async function setRangeMaxReverse(min) {
   let rangeMax = await ask(
     `\nWhat would you like the largest number in our game to be?\n(If your not sure I recommend using the number 100)\n`
   );
@@ -198,7 +198,7 @@ async function setRangeMax(min) {
     }
 
 // Function for Player to set the bottom of the Range
-async function setRangeMin() {
+async function setRangeMinReverse() {
   let rangeMin = await ask(
     `First we need to set the Range of Numbers for our game.\nWhat would you like the smallest number in our game to be?\n(If your not sure I recommend using the number 1)\n`
   );
