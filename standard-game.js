@@ -1,5 +1,5 @@
 // Project: Week 2
-// Guess the Number - Both Games in One
+// Guess the Number - Standard Game
 // John Isabella III
 
 const readline = require("readline");
@@ -11,14 +11,14 @@ function ask(questionText) {
   });
 }
 
-start(); // This is where all the code is
+startStandardGame(); // This is where all the code is
 
-async function start() {
+async function startStandardGame() {
   console.log(
     `\nLet's play a game where you (human) make up a number and I (computer) try to guess it.`
   );
   let secretNumber = await ask(
-    `What is your "Secret Number"?\n\n5I won't peek, I promise...\n(Cross my Harddrive & Hope to Crash...)\n`
+    `What is your "Secret Number"?\n\nI won't peek, I promise...\n(Cross my Harddrive & Hope to Crash...)\n`
   );
   setRangeNumberCheck(secretNumber);
   console.log(
@@ -39,20 +39,14 @@ async function start() {
   console.log(`Our range has been set from ${min} to ${max}.\n`);
   phraseStart(min, max); // Prints Statement
   prediction = wager(min, max); //Prints Prediction
+  console.log(`If at any point you want to Quit the game.\nType in "E" or "EXIT"\n`);
 
   while (toInfinityAnd !== "Beyond!!!") {
     guess = cpuGuess(min, max); //return "guess" = number
     let correctNumber = await cpuGuessQuestion(guess, i); //returns "correctNumber" = Y or N
     if (correctNumber === "Y" || correctNumber === "Yes") {
       round2 = await phraseEndOfGame(guess, i, secretNumber); // returns Play or Exit
-      if (round2 === ("P" || "Play")) {
-        start();
-      } else if (round2 === "E" || round2 === "Exit") {
-        console.log("\nI can't wait to play again with you!\n\n");
-        quitGame(round2);
-      } else {
-        notValid(round2);
-      }
+     nextRound(round2);
     } else if (correctNumber === "N" || correctNumber === "No") {
       i++; //Tracks the number of guesses
       cheating(guess, min, max); //checks for cheating
@@ -135,6 +129,17 @@ async function cpuGuessQuestion(guess, i) {
 function quitGame(quit) {
   if (quit === "Exit" || quit === "E");
   process.exit(); // This ends the Game
+}
+
+// Function that lets the player decide if they want to play again or quit
+function nextRound(round2){
+  if (round2 === ("P" || "Play")) {
+    startStandardGame();// TODO This will have to change for the Merged Game
+  } else if (round2 === "E" || round2 === "Exit") {
+    quitGame(round2);
+  } else {
+    notValid(round2);
+  }
 }
 
 // Response for an Invalid Answer response

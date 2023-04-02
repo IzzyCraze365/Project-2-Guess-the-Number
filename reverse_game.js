@@ -2,7 +2,6 @@
 // Guess the Number - Reverse Game
 // John Isabella III
  
-const { log } = require('console');
 const readline = require('readline');
 const rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -12,9 +11,9 @@ function ask(questionText) {
   });
 }
 
-start();
+startReverseGame();
 
-async function start() {
+async function startReverseGame() {
   console.log(`Let's play a game where I (computer) make up a number and you (human) try to guess it.\n\n`)
  // Now try and complete the program.
  
@@ -36,6 +35,8 @@ async function start() {
  minDummy = min; // This will tell the player if they made a stupid guess
  console.log(`I have selected a "Secret Number between the numbers ${min} and ${max}.\n`);
  prediction = wager(min, max);
+ console.log(`If at any point you want to Quit the game.\nType in "E" or "EXIT"\nGood Luck, Dum Dum\n`);
+
  while (toInfinityAnd !== "Beyond!!!") {
   guess = await humanGuess(i);
   i++;
@@ -145,7 +146,7 @@ async function humanGuess(i) {
 // Function that lets the player decide if they want to play again or quit
 function nextRound(round2){
   if (round2 === ("P" || "Play")) {
-    start();
+    startReverseGame();// TODO This will have to change for the Merged Game
   } else if (round2 === "E" || round2 === "Exit") {
     quitGame(round2);
   } else {
