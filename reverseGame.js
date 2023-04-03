@@ -4,6 +4,7 @@
 
 const readline = require("readline");
 const rl = readline.createInterface(process.stdin, process.stdout);
+module.exports = reverseGame; // This lets the file link to other JS Files //TODO This is Not Working
 
 function ask(questionText) {
   return new Promise((resolve, reject) => {

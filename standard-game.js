@@ -10,8 +10,26 @@ function ask(questionText) {
     rl.question(questionText, resolve);
   });
 }
+const startReverseGame = require("./reverseGame"); // This calls the Reverse Game //TODO I did not get this to work
 
-startStandardGame(); // This is where all the code is
+start(); // This is where all the code is
+
+
+async function start() {
+  let standardOrReverse = await ask(
+    `Welcome to the Greatest Game in the Kindergarden Play Yard!!!\nGuess the Number!\n\nWhat kind of a game would you like to play???\nThe Standard Game, where you (human) make up a number and I (computer) try to guess it.\nOr the Reverse Gamewhere I (computer) make up a number and you (human) try to guess it.\n \nIf you want to play the Standard Game type in "STANDARD" or "S"\nIf you want to play the Reverse Game type in "REVERSE" or "R"\n`
+  );
+  standardOrReverse = capitalizeFirstLetter(standardOrReverse);
+  if (standardOrReverse === "Standard" || standardOrReverse === "S") {
+    startStandardGame(); // This is where all the code is for the Standard Game
+  } else if (standardOrReverse === "Reverse" || standardOrReverse === "R") {
+    startReverseGame(); // This is where all the code is for the Reverse Game
+  } else {
+    notValid(standardOrReverse);
+    process.exit();
+  }
+}
+
 
 async function startStandardGame() {
   console.log(
