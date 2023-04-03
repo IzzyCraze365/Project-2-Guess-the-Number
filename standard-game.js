@@ -15,7 +15,7 @@ startStandardGame(); // This is where all the code is
 
 async function startStandardGame() {
   console.log(
-    `\nLet's play a game where you (human) make up a number and I (computer) try to guess it.`
+    `Welcome to the Greatest Game in the Kindergarden Play Yard!!!\nGuess the Number!\n\nLet's play a game where you (human) make up a number and I (computer) try to guess it.`
   );
   let secretNumber = await ask(
     `What is your "Secret Number"?\n\nI won't peek, I promise...\n(Cross my Harddrive & Hope to Crash...)\n`
@@ -39,14 +39,16 @@ async function startStandardGame() {
   console.log(`Our range has been set from ${min} to ${max}.\n`);
   phraseStart(min, max); // Prints Statement
   prediction = wager(min, max); //Prints Prediction
-  console.log(`If at any point you want to Quit the game.\nType in "E" or "EXIT"\n`);
+  console.log(
+    `If at any point you want to Quit the game.\nType in "E" or "EXIT"\n`
+  );
 
   while (toInfinityAnd !== "Beyond!!!") {
     guess = cpuGuess(min, max); //return "guess" = number
     let correctNumber = await cpuGuessQuestion(guess, i); //returns "correctNumber" = Y or N
     if (correctNumber === "Y" || correctNumber === "Yes") {
       round2 = await phraseEndOfGame(guess, i, secretNumber); // returns Play or Exit
-     nextRound(round2);
+      nextRound(round2);
     } else if (correctNumber === "N" || correctNumber === "No") {
       i++; //Tracks the number of guesses
       cheating(guess, min, max); //checks for cheating
@@ -132,9 +134,9 @@ function quitGame(quit) {
 }
 
 // Function that lets the player decide if they want to play again or quit
-function nextRound(round2){
+function nextRound(round2) {
   if (round2 === ("P" || "Play")) {
-    startStandardGame();// TODO This will have to change for the Merged Game
+    startStandardGame(); // TODO This will have to change for the Merged Game
   } else if (round2 === "E" || round2 === "Exit") {
     quitGame(round2);
   } else {
