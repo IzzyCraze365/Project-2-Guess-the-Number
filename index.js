@@ -25,6 +25,7 @@ let toInfinityAnd = "START"; // These keeps the While loop running
 start(); // Start of the game
 
 async function start() {
+  i = 1;
   let standardOrReverse = await ask(
     `Welcome to the Greatest Game in the Kindergarden Play Yard!!!\nGuess the Number!\n\nWhat kind of a game would you like to play???\nThe Standard Game, where you (human) make up a number and I (computer) try to guess it.\nOr the Reverse Gamewhere I (computer) make up a number and you (human) try to guess it.\n \nIf you want to play the Standard Game type in "STANDARD" or "S"\nIf you want to play the Reverse Game type in "REVERSE" or "R"\n`
   );
@@ -425,18 +426,18 @@ function setRangeNumberCheck(notANumber) {
 
 // Function calculates how many guesses it needs to figure out the Secret Number
 function wager(min, max) {
-  let yogiBear = Math.floor(Math.log2(max - min) + 1);
+  let wagerPrediction = Math.floor(Math.log2(max - min) + 1);
   console.log(
-    `I will be able to figure out your "Secret Number" in ${yogiBear} guesses.\nBecause I am smarter than the average bear.\n`
+    `I will be able to figure out your "Secret Number" in ${wagerPrediction} guesses.\nBecause I am smarter than the average bear.\n`
   );
-  return yogiBear;
+  return wagerPrediction;
 }
 
 // Function calculates how many guesses it needs to figure out the Secret Number //! Reverse Game
 function wagerReverse(min, max) {
-  let yogiBear = Math.floor(Math.log2(max - min) + 1);
+  let wagerPrediction = Math.floor(Math.log2(max - min) + 1);
   console.log(
-    `\nIf you are really smart you should be able to figure out what my Secret Number is in less than ${yogiBear} guesses.\nGood luck, Dum-Dum!\n`
+    `\nIf you are really smart you should be able to figure out what my Secret Number is in less than ${wagerPrediction} guesses.\nGood luck, Dum-Dum!\n`
   );
-  return yogiBear;
+  return wagerPrediction;
 }
