@@ -1,7 +1,7 @@
 // Project: Week 2
 // Guess the Number - Twice The Fun, Double the Games
-// Attempt 2
 // John Isabella III
+// Original Code
 
 const readline = require("readline");
 const rl = readline.createInterface(process.stdin, process.stdout);
@@ -21,7 +21,7 @@ let guess = 0;
 let i = 1; // Keeps track of how many times the CPU made a guess
 let prediction = 0; //This is how many guesses the CPU thinks it needs
 let highLow = "A";
-let runGame = "START"; // These keeps the While loop running
+let toInfinityAnd = "START"; // These keeps the While loop running
 
 start(); // Start of the game
 
@@ -60,7 +60,7 @@ async function startStandardGame() {
     `If at any point you want to Quit the game.\nType in "E" or "EXIT"\n`
   );
 
-  while (runGame !== "Running") {
+  while (toInfinityAnd !== "Beyond!!!") {
     guess = cpuGuess(min, max); //return "guess" = number
     let correctNumber = await cpuGuessQuestion(guess, i); //returns "correctNumber" = Y or N
     if (correctNumber === "Y" || correctNumber === "Yes") {
@@ -110,7 +110,7 @@ async function startReverseGame() {
     `If at any point you want to Quit the game.\nType in "E" or "EXIT"\nGood Luck, Dum Dum\n`
   );
 
-  while (runGame !== "Running") {
+  while (toInfinityAnd !== "Beyond!!!") {
     guess = await humanGuess(i);
     i++;
     dummyCheck(guess, min, max, minDummy, maxDummy, prediction);
